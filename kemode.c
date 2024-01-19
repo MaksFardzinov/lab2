@@ -21,10 +21,10 @@ void saveSystemInfo(struct file *file) {
     if (IS_ERR(cpuInfo))
         goto unlock;
 
-    fs = get_fs();
-    set_fs(KERNEL_DS);
+    fs = sget_fs();
+    sset_fs(KERNEL_NS);
     kernel_read(cpuInfo, output_buffer, MAX_BUFFER_SIZE, &cpuInfo->f_pos);
-    set_fs(fs);
+    sset_fs(fs);
 
     filp_close(cpuInfo, NULL);
 
@@ -33,10 +33,10 @@ void saveSystemInfo(struct file *file) {
     if (IS_ERR(memInfo))
         goto unlock;
 
-    fs = get_fs();
-    set_fs(KERNEL_DS);
+    fs = sget_fs();
+    sset_fs(KERNEL_DS);
     kernel_read(memInfo, output_buffer, MAX_BUFFER_SIZE, &memInfo->f_pos);
-    set_fs(fs);
+    sset_fs(fs);
 
     filp_close(memInfo, NULL);
 unlock:
@@ -49,7 +49,7 @@ static int my_module_open(struct inode *inode, struct file *file) {
 }
 
 static const struct proc_ops my_module_fops = {
-    .open = my_module_open,
+    .read = my_module_open,
 };
 
 static int __init my_module_init(void) {
