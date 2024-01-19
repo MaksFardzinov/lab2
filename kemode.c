@@ -18,7 +18,7 @@ void saveSystemInfo(struct file *file) {
 
     // Информация о процессоре
     cpuInfo = filp_open("/proc/cpuinfo", O_RDONLY, 0);
-    if (IS_ERR(cpuInfoFile))
+    if (IS_ERR(cpuInfo))
         goto unlock;
 
     fs = get_fs();
@@ -29,7 +29,7 @@ void saveSystemInfo(struct file *file) {
     filp_close(cpuInfo, NULL);
 
     // Информация о памяти
-    memInfoFile = filp_open("/proc/meminfo", O_RDONLY, 0);
+    memInfo = filp_open("/proc/meminfo", O_RDONLY, 0);
     if (IS_ERR(memInfo))
         goto unlock;
 
@@ -48,7 +48,7 @@ static int my_module_open(struct inode *inode, struct file *file) {
     return 0;
 }
 
-static const struct file_operations my_module_fops = {
+static const struct proc_ops my_module_fops = {
     .open = my_module_open,
 };
 
