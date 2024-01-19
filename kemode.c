@@ -24,7 +24,7 @@ static ssize_t read_cpuinfo(char *buf) {
     }
 
     // Читаем данные из файла в буфер
-    result = kernel_read(f, buf, MAX_BUFFER_SIZE, &pos);
+    result = kernel_read(cpuinfo, buf, MAX_BUFFER_SIZE, &pos);
 
     // Закрываем файл
     filp_close(cpuinfo, NULL);
