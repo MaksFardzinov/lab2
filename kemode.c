@@ -49,7 +49,7 @@ static int my_module_open(struct inode *inode, struct file *file) {
 }
 
 static const struct proc_ops my_module_fops = {
-    .read = my_module_open,
+    .proc_read = my_module_open,
 };
 
 static int __init my_module_init(void) {
